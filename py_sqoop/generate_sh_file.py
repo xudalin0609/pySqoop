@@ -12,7 +12,7 @@ class GenerateShFile:
         # TODO
         # 参数选项优化,添加文件参数，可选参数等
         parser = argparse.ArgumentParser()
-        parser.add_argument("import_export", choices=["import", "export"], help="import to hive")
+        parser.add_argument("action", choices=["import", "export"], help="import to hive")
         parser.add_argument("--connect", help="mysql URI what you want to connect", required=True)
         parser.add_argument("--username", required=True)
         parser.add_argument("--password", required=True)
@@ -29,7 +29,7 @@ class GenerateShFile:
         with open(os.path.join(os.path.dirname(os.getcwd()), "sh", "{}_{}.sh".format(args['import_export'], args["--table"])), "w+") as f:
             s = ""
             s += args.pop("sqoop") + " "
-            s += args.pop("import_export") + " "
+            s += args.pop("action") + " "
             for k, v in args.items():
                 s += "{} {} ".format(k, v)
             f.write(s)
