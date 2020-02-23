@@ -1,0 +1,1 @@
+sqoop export --connect jdbc:mysql://rm-bp1601s89e1c42o17co.mysql.rds.aliyuncs.com:3306/hivedata --username hive_op -P --table sqoop_export_test --fields-terminated-by "," --update-key f1 --update-mode allowinsert --export-dir /user/hive/warehouse/tmp.db/sqoop_export_test
