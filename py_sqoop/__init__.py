@@ -7,10 +7,13 @@ class BaseCommand:
     def to_add(self):
         pass
 
+    def handle(self):
+        pass
+
 
 class TransCommand(BaseCommand):
 
-    def run_from_argv(self):
+    def run_from_argv(self, argv):
         pass
 
     def add_parser(self):
@@ -31,7 +34,7 @@ class TransCommand(BaseCommand):
     def generate_sh_file(self):
         args = self.add_parser().parse_args()
         args = BaseModel(args).command_line
-        with open(os.path.join(os.path.dirname(os.getcwd()), "sh", "{}_{}.sh".format(args['import_export'], args["--table"])), "w+") as f:
+        with open(os.path.join(os.path.dirname(os.getcwd()), "sh", "{}_{}.sh".format(args['action'], args["--table"])), "w+") as f:
             s = ""
             s += args.pop("sqoop") + " "
             s += args.pop("action") + " "
@@ -41,3 +44,30 @@ class TransCommand(BaseCommand):
 
     def run(self):
         self.generate_sh_file()
+
+    def handle(self):
+        self.run()
+
+
+class BaseModel:
+
+    def __init__(self, paras):
+        self.command_line = dict()
+        self.command_line['sqoop'] = "sqoop"
+        self.analyse_para(paras)
+
+    def analyse_para(self, paras):
+        self.import_module(paras)
+
+    def __add_line(self, para):
+        return "--"+para
+
+    def import_module(self, paras):
+        paras = vars(paras)
+        self.command_line['action'] = paras.pop('action')
+        for k, i in paras.items():
+            self.command_line[self.__add_line(k)] = i
+
+    @property
+    def command(self):
+        return self.command_line

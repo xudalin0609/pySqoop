@@ -30,7 +30,6 @@ class ManagementUtility:
 
     def fetch_command(self, subcommand):
         commands = get_commands()
-        print(commands)
         app_name = commands[subcommand]
         klass = load_command_class(app_name, subcommand)
         return klass
