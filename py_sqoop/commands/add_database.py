@@ -1,9 +1,8 @@
-from py_sqoop import BaseCommand
+from py_sqoop import DataBaseCommand
 
 
-class Command(BaseCommand):
-    def __init__(self):
-        pass
+class Command(DataBaseCommand):
 
     def run_from_argv(self, argv):
-        print("run_from_argv")
+        self.create_parser()
+        super().handle(argv)
