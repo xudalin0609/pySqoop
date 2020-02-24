@@ -14,14 +14,16 @@ class TransCommand(BaseCommand):
 
     def add_parser(self):
         # TODO
-        # 参数选项优化,添加文件参数，可选参数等
+        # 参数选项优化,添加文件参数，可选参数等,将sqoop参数变为不定参数
 
+        self.create_parser()
         self.parser.add_argument("action", choices=["import", "export"], help="import to hive")
         self.parser.add_argument("--db-name", help="database you want to connect", required=True)
         self.parser.add_argument("--table", required=True)
         self.parser.add_argument("--fields-terminated-by", default=",")
         self.parser.add_argument("--update-key", required=True)
-        self.parser.add_argument("--export-dir", required=True)
+        self.parser.add_argument("--export-dir")
+        self.parser.add_argument("--target-dir")
         self.parser.add_argument("--update-mode", default="allowinsert")
 
     def generate_sh_file(self, argv):
@@ -35,6 +37,7 @@ class TransCommand(BaseCommand):
             for k, v in args.items():
                 s += "{} {} ".format(k, v)
             f.write(s)
+            print("generate sh file success")
 
     def handle(self, argv):
         self.add_parser()
